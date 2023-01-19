@@ -17,25 +17,27 @@ export function Profile() {
 
   const { user, updateProfile } = useAuth();
 
-  const avatarURL = user.avatar ? `${api.defaults.baseURL}/files${user.avatar}` : avatarPlaceholder;
+  const avatarURL = user.avatar ? `${api.defaults.baseURL}/files/${user.avatar}` : avatarPlaceholder;
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState();
   const [newPassword, setNewPassword] = useState();
 
-  const [avatar, setAvatar] = useState(user.avatar);
+  const [avatar, setAvatar] = useState(avatarURL);
   const [avatarFile, setAvatarFile] = useState(null);
 
   async function handleProfile() {
-    const user = {
+    const updated = {
       name,
       email,
       old_password: password ?? "",
       password: newPassword ?? "",
     }
 
-    await updateProfile({user, avatarFile});
+    const userUpdated = Object.assign(user, updated);
+    await updateProfile({user: userUpdated, avatarFile});
+
   }
 
   function handleChangeAvatar(event) {
@@ -46,8 +48,6 @@ export function Profile() {
     setAvatar(imagePreview);
     
   }
-
-  console.log(avatarFile);
 
 
   return(
@@ -80,7 +80,7 @@ export function Profile() {
         icon={FiUser}
         type ="text"
         placeholder = "Nome"
-        value = {name}
+        value = {user.name}
         onChange ={e => setName(e.target.value)}
         />
 
@@ -88,7 +88,7 @@ export function Profile() {
         icon={FiMail}
         type ="text"
         placeholder = "E-mail"
-        value = {email}
+        value = {user.email}
         onChange ={e => setEmail(e.target.value)}
         />
 

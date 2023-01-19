@@ -17,6 +17,13 @@ export const Container = styled.div`
     border: none;
     background: none;
 
+    .button-delete{
+        color: ${({theme})=>theme.COLORS.RED};
+    }
+    .button-add{
+        color: ${({theme})=>theme.COLORS.ORANGE};
+    }
+
     svg {
       color: ${({theme, isNew})=> isNew ? theme.COLORS.ORANGE : theme.COLORS.RED};
     }
